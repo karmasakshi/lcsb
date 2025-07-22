@@ -1,6 +1,20 @@
-@let _session = session();
+<div style="min-height: 100vh; padding: 0 16px; align-items: center; display: flex; justify-content: center;">
+  <img fill priority ngSrc="./hero.webp" alt="Hero" style="object-fit: cover; position: absolute; inset: 1;">
+    @let _session = session();
 @if (_session) {
-  <p>home-page works!</p>
+  <mat-card style="min-width: 480px;">
+    <img mat-card-image priority ngSrc="./card.webp" height="180" width="480" alt="Card">
+    <mat-card-header>
+      <mat-card-title>You're signed in</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Your blood pressure data is ready.</p>
+      <p></p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button routerLink="/bp" type="button" matButton="filled">View BP</button>
+    </mat-card-actions>
+  </mat-card>
 } @else {
   <lcsb-sign-in-form></lcsb-sign-in-form>
 }

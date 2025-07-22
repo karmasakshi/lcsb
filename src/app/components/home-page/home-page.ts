@@ -1,9 +1,13 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   Signal,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 import { Session } from '../../interfaces/session';
 import { User } from '../../services/user/user';
 import { SignInForm } from '../sign-in-form/sign-in-form';
@@ -11,7 +15,7 @@ import { SignInForm } from '../sign-in-form/sign-in-form';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-home-page',
-  imports: [SignInForm],
+  imports: [NgOptimizedImage,RouterLink,MatButtonModule,MatCardModule,SignInForm],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

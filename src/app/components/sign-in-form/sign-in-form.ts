@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,6 +26,7 @@ import { User } from '../../services/user/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-sign-in-form',
   imports: [
+    NgOptimizedImage,
     ReactiveFormsModule,
     MatButtonModule,
     MatCardModule,
