@@ -27,13 +27,11 @@ export class User {
 
   public signIn(email: string, password: string): Promise<Session> {
     return firstValueFrom(
-    this._httpClient
-      .post<Session>('/login', { email, password })
-      .pipe(
+      this._httpClient.post<Session>('/login', { email, password }).pipe(
         delay(1800),
-        tap(({token}) => this._session.set({token}))
-      )
-  );
+        tap(({ token }) => this._session.set({ token })),
+      ),
+    );
   }
 
   public signOut(): void {
