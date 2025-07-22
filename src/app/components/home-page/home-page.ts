@@ -15,7 +15,13 @@ import { SignInForm } from '../sign-in-form/sign-in-form';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-home-page',
-  imports: [NgOptimizedImage,RouterLink,MatButtonModule,MatCardModule,SignInForm],
+  imports: [
+    NgOptimizedImage,
+    RouterLink,
+    MatButtonModule,
+    MatCardModule,
+    SignInForm,
+  ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })
