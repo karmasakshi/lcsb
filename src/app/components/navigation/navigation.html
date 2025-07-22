@@ -6,7 +6,7 @@
   <div style="flex: 1"></div>
   @let _session = session();
   @if (_session) {
-    <button matButton>
+    <button (click)="signOut()" matButton>
       <mat-icon>logout</mat-icon>
       <span>Sign out</span>
     </button>

@@ -23,6 +23,12 @@
           required
           type="email"
         />
+        @if(signInFormGroup.controls.email.touched && signInFormGroup.controls.email.errors?.['required']) {
+          <mat-error>Email is required</mat-error>
+        }
+        @if(signInFormGroup.controls.email.touched && signInFormGroup.controls.email.errors?.['email']) {
+          <mat-error>Please enter a valid email address</mat-error>
+        }
       </mat-form-field>
       @let _isPasswordHidden = isPasswordHidden();
       <mat-form-field>
@@ -46,6 +52,12 @@
             _isPasswordHidden ? 'visibility' : 'visibility_off'
           }}</mat-icon>
         </button>
+        @if(signInFormGroup.controls.password.touched && signInFormGroup.controls.password.errors?.['required']) {
+          <mat-error>Password is required</mat-error>
+        }
+        @if(signInFormGroup.controls.password.touched && signInFormGroup.controls.password.errors?.['minlength']){
+          <mat-error>Password must be at least 6 characters</mat-error>
+        }
       </mat-form-field>
     </form>
   </mat-card-content>
