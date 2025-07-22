@@ -26,6 +26,6 @@ export const appConfig: ApplicationConfig = {
           import('highcharts/esm/themes/sunset'),
         ];
       },
-    })
+    }),
   ],
 };
