@@ -25,6 +25,6 @@ export class Navigation {
 
   public signOut(): void {
     this._userService.signOut();
-    this._router.navigateByUrl('');
+    this._router.navigateByUrl('/');
   }
 }
