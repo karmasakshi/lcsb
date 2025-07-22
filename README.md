@@ -2,6 +2,7 @@
 
 # Features
 
+- Full commit history from scratch
 - Linting via ESLint
 - Code formatting via Prettier
 
@@ -23,3 +24,7 @@
 
 - [Bp](./src/app/services/bp/bp.ts): Gets the blood pressure data of the signed-in user.
 - [User](./src/app/services/user/user.ts): Manages session of the user.
+
+## Exclusions
+
+- Internationalization
