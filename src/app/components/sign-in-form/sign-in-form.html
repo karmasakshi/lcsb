@@ -1,1 +1,10 @@
-<p>sign-in-form works!</p>
+@let _isLoading = isLoading();
+<mat-card class="lcsb-sign-in-card">
+  <mat-card-header>
+    <mat-card-title>Sign in</mat-card-title>
+  </mat-card-header>
+  <mat-card-content></mat-card-content>
+  <mat-card-footer>
+    <mat-progress-bar mode="indeterminate" [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"></mat-progress-bar>
+  </mat-card-footer>
+</mat-card>

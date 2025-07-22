@@ -1,1 +1,6 @@
+@let _session = session();
+@if(_session) {
 <p>home-page works!</p>
+} @else {
+  <lcsb-sign-in-form></lcsb-sign-in-form>
+}

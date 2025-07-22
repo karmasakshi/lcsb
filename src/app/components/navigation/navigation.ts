@@ -17,7 +17,7 @@ export class Navigation {
   private readonly _router = inject(Router);
   private readonly _userService = inject(User);
 
-  public session: Signal<null | Session>
+  public readonly session: Signal<null | Session>
 
   public constructor() {
     this.session = this._userService.session;
@@ -25,6 +25,6 @@ export class Navigation {
 
   public signOut(): void {
     this._userService.signOut();
-    this._router.navigateByUrl('/');
+    void this._router.navigateByUrl('/');
   }
 }
