@@ -1,1 +1,11 @@
-<p>bp-chart works!</p>
+<mat-card>
+  <mat-card-content>
+    <highcharts-chart
+      [constructorType]="chartConstructor"
+      [options]="chartOptions"
+      [(update)]="updateFlag"
+      [oneToOne]="oneToOneFlag"
+      class="chart"
+    />
+  </mat-card-content>
+</mat-card>

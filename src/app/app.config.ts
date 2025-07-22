@@ -5,6 +5,7 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHighcharts } from 'highcharts-angular';
 import { routes } from './app.routes';
 import { getUsersDataInterceptor } from './interceptors/get-users-data/get-users-data-interceptor';
 import { postLoginInterceptor } from './interceptors/post-login/post-login-interceptor';
@@ -17,5 +18,14 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
     provideRouter(routes),
+    provideHighcharts({
+      modules: () => {
+        return [
+          import('highcharts/esm/modules/histogram-bellcurve'),
+          import('highcharts/esm/modules/accessibility'),
+          import('highcharts/esm/themes/sunset'),
+        ];
+      },
+    })
   ],
 };
