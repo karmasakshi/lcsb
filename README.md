@@ -13,7 +13,7 @@
 
 ## Interceptors
 
-- [getUserDataInterceptor](./src/app/interceptors/get-user-data/get-user-data-interceptor.ts): Mocks `GET /users/{token}/data`.
+- [getUsersDataInterceptor](./src/app/interceptors/get-users-data/get-users-data-interceptor.ts): Mocks `GET /users/{token}/data`.
 - [postLoginInterceptor](./src/app/interceptors/post-login/post-login-interceptor.ts): Mocks `POST /login`.
 
 ## Services

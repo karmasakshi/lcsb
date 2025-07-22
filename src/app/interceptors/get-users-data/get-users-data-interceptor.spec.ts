@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpInterceptorFn } from '@angular/common/http';
 
-import { getUserDataInterceptor } from './get-user-data-interceptor';
+import { getUsersDataInterceptor } from './get-users-data-interceptor';
 
-describe('getUserDataInterceptor', () => {
+describe('getUsersDataInterceptor', () => {
   const interceptor: HttpInterceptorFn = (req, next) => 
-    TestBed.runInInjectionContext(() => getUserDataInterceptor(req, next));
+    TestBed.runInInjectionContext(() => getUsersDataInterceptor(req, next));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

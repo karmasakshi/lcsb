@@ -1,8 +1,8 @@
 import { HttpHeaders, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 
-export const getUserDataInterceptor: HttpInterceptorFn = (req, next) => {
-  const userDataApiRegex = /\/user\/[^\/]+\/data$/;
+export const getUsersDataInterceptor: HttpInterceptorFn = (req, next) => {
+  const userDataApiRegex = /\/users\/[^\/]+\/data$/;
 
   if (req.method === 'GET' && userDataApiRegex.test(req.url)) {
     return of(new HttpResponse({
