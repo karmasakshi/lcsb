@@ -28,3 +28,4 @@
 ## Exclusions
 
 - Internationalization
+- Unit and E2E tests

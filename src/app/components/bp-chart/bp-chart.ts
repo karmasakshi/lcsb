@@ -19,11 +19,15 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 export class BpChart {
   public readonly bloodPressures: InputSignal<number[]> = input.required();
 
+  private _scatterSeriesData: number[] = [];
+
   public readonly oneToOneFlag: boolean;
-  public options: Highcharts.Options;
+  public readonly options: Highcharts.Options;
   public readonly updateFlag: boolean;
 
   public constructor() {
+    this._scatterSeriesData = [];
+
     this.oneToOneFlag = true;
 
     this.options = {
@@ -68,7 +72,7 @@ export class BpChart {
         {
           name: 'Blood Pressure',
           type: 'scatter',
-          data: [],
+          data: this._scatterSeriesData,
           id: 'bp-data',
           marker: { radius: 2 },
           visible: false,
@@ -82,25 +86,7 @@ export class BpChart {
       const bloodPressures: number[] = this.bloodPressures();
 
       untracked(() => {
-        this.options = {
-          ...this.options,
-          series: [
-            {
-              name: 'Blood Pressure Distribution',
-              type: 'histogram',
-              baseSeries: 'bp-data',
-              zIndex: 1,
-            },
-            {
-              name: 'Blood Pressure',
-              type: 'scatter',
-              data: bloodPressures,
-              id: 'bp-data',
-              marker: { radius: 2 },
-              visible: false,
-            },
-          ],
-        };
+        (this.options.series![1] as Highcharts.SeriesScatterOptions).data = [...bloodPressures];
       });
     });
   }
