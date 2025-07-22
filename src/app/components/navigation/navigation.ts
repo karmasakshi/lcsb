@@ -12,5 +12,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navigation.scss'
 })
 export class Navigation {
+  public user: Record<string, string> | null;
 
+  public constructor(){
+    this.user = {};
+  }
 }

@@ -4,13 +4,15 @@
   </button>
   <span>LCSB</span>
   <div style="flex: 1"></div>
-  <button routerLink="bp" matIconButton aria-label="BP">
-    <mat-icon>monitor_heart</mat-icon>
-  </button>
-  <button matIconButton aria-label="Sign in">
-    <mat-icon>login</mat-icon>
-  </button>
-  <button matIconButton aria-label="Sign out">
-    <mat-icon>logout</mat-icon>
-  </button>
+  @let _user = user;
+  @if(_user) {
+    <button routerLink="bp" matButton>
+      <mat-icon>monitor_heart</mat-icon>
+      <span>BP</span>
+    </button>
+    <button matButton>
+      <mat-icon>logout</mat-icon>
+      <span>Sign out</span>
+    </button>
+  }
 </mat-toolbar>
