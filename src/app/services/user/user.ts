@@ -6,7 +6,7 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
-import { delay, firstValueFrom } from 'rxjs';
+import { delay, firstValueFrom, tap } from 'rxjs';
 import { Session } from '../../interfaces/session';
 
 @Injectable({
@@ -27,10 +27,13 @@ export class User {
 
   public signIn(email: string, password: string): Promise<Session> {
     return firstValueFrom(
-      this._httpClient
-        .post<Session>('/login', { email, password })
-        .pipe(delay(1800)),
-    );
+    this._httpClient
+      .post<Session>('/login', { email, password })
+      .pipe(
+        delay(1800),
+        tap(({token}) => this._session.set({token}))
+      )
+  );
   }
 
   public signOut(): void {
