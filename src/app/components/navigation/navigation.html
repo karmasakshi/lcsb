@@ -4,8 +4,8 @@
   </button>
   <span>LCSB</span>
   <div style="flex: 1"></div>
-  @let _user = user;
-  @if(_user) {
+  @let _session = session();
+  @if(_session) {
     <button routerLink="bp" matButton>
       <mat-icon>monitor_heart</mat-icon>
       <span>BP</span>
