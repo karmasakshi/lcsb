@@ -1,11 +1,12 @@
-<mat-card>
-  <mat-card-content>
-    <highcharts-chart
-      [constructorType]="chartConstructor"
-      [options]="chartOptions"
-      [(update)]="updateFlag"
-      [oneToOne]="oneToOneFlag"
-      class="chart"
-    />
-  </mat-card-content>
-</mat-card>
+<section style="padding: 16px; display: flex; justify-content: center;">
+  <mat-card style="min-width: 960px;">
+    <mat-card-content>
+      <highcharts-chart
+        [options]="options"
+        [(update)]="updateFlag"
+        [oneToOne]="oneToOneFlag"
+        style="height: 480px; display: block;"
+      />
+    </mat-card-content>
+  </mat-card>
+</section>
