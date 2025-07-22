@@ -5,8 +5,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'lcsb-bp-page',
   imports: [],
   templateUrl: './bp-page.html',
-  styleUrl: './bp-page.scss'
+  styleUrl: './bp-page.scss',
 })
-export class BpPage {
-
-}
+export class BpPage {}

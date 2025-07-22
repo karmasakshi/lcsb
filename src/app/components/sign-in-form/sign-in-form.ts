@@ -1,5 +1,17 @@
-import { ChangeDetectionStrategy, Component, inject, signal, WritableSignal } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+  WritableSignal,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,9 +24,17 @@ import { User } from '../../services/user/user';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-sign-in-form',
-  imports: [ReactiveFormsModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatIconModule, MatInputModule, MatProgressBarModule],
+  imports: [
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatProgressBarModule,
+  ],
   templateUrl: './sign-in-form.html',
-  styleUrl: './sign-in-form.scss'
+  styleUrl: './sign-in-form.scss',
 })
 export class SignInForm {
   private _formBuilder = inject(FormBuilder);
@@ -45,7 +65,7 @@ export class SignInForm {
     });
   }
 
-    public async signIn(email: string, password: string) {
+  public async signIn(email: string, password: string) {
     if (this.isLoading()) {
       return;
     }
@@ -55,10 +75,7 @@ export class SignInForm {
     this.signInFormGroup.disable();
 
     try {
-      await this._userService.signIn(
-        email,
-        password,
-      );
+      await this._userService.signIn(email, password);
 
       void this._router.navigateByUrl('/bp');
     } catch (error: unknown) {
@@ -69,7 +86,7 @@ export class SignInForm {
     }
   }
 
-  public togglePasswordVisibility():void {
-    this.isPasswordHidden.update(isPasswordHidden=>!isPasswordHidden);
+  public togglePasswordVisibility(): void {
+    this.isPasswordHidden.update((isPasswordHidden) => !isPasswordHidden);
   }
 }

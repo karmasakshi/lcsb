@@ -4,7 +4,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { getUsersDataInterceptor } from './get-users-data-interceptor';
 
 describe('getUsersDataInterceptor', () => {
-  const interceptor: HttpInterceptorFn = (req, next) => 
+  const interceptor: HttpInterceptorFn = (req, next) =>
     TestBed.runInInjectionContext(() => getUsersDataInterceptor(req, next));
 
   beforeEach(() => {

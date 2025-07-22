@@ -1,10 +1,16 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import {
+  inject,
+  Injectable,
+  Signal,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { delay, firstValueFrom } from 'rxjs';
 import { Session } from '../../interfaces/session';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class User {
   private readonly _httpClient = inject(HttpClient);
@@ -23,7 +29,7 @@ export class User {
     return firstValueFrom(
       this._httpClient
         .post<Session>('/login', { email, password })
-        .pipe(delay(1800))
+        .pipe(delay(1800)),
     );
   }
 

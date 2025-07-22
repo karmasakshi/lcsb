@@ -8,9 +8,8 @@ describe('BpChart', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BpChart]
-    })
-    .compileComponents();
+      imports: [BpChart],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BpChart);
     component = fixture.componentInstance;

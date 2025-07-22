@@ -5,68 +5,75 @@
   <mat-card-content>
     <p></p>
     <form
-            id="sign-in-form"
-            [formGroup]="signInFormGroup"
-            (ngSubmit)="
-              signIn(
-                signInFormGroup.controls.email.value ?? '',
-                signInFormGroup.controls.password.value ?? ''
-              )
-            "
-          >
-            <mat-form-field>
-              <mat-label>Email</mat-label>
-              <input
-                autocomplete="email"
-                formControlName="email"
-                placeholder="Email"
-                matInput
-                required
-                type="email"
-              />
-            </mat-form-field>
-            @let _isPasswordHidden = isPasswordHidden();
-            <mat-form-field>
-              <mat-label>Password</mat-label>
-              <input
-                [type]="_isPasswordHidden ? 'password' : 'text'"
-                autocomplete="current-password"
-                formControlName="password"
-                placeholder="Password"
-                matInput
-                required
-              />
-              <button
-                aria-label="Toggle visibility"
-                [disabled]="signInFormGroup.controls.password.disabled"
-                (click)="togglePasswordVisibility()"
-                matIconButton
-                matSuffix
-                type="button"
-              >
-                <mat-icon>{{
-                  _isPasswordHidden ? 'visibility' : 'visibility_off'
-                }}</mat-icon>
-              </button>
-            </mat-form-field>
-          </form>
+      id="sign-in-form"
+      [formGroup]="signInFormGroup"
+      (ngSubmit)="
+        signIn(
+          signInFormGroup.controls.email.value ?? '',
+          signInFormGroup.controls.password.value ?? ''
+        )
+      "
+    >
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          autocomplete="email"
+          formControlName="email"
+          placeholder="Email"
+          matInput
+          required
+          type="email"
+        />
+      </mat-form-field>
+      @let _isPasswordHidden = isPasswordHidden();
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          [type]="_isPasswordHidden ? 'password' : 'text'"
+          autocomplete="current-password"
+          formControlName="password"
+          placeholder="Password"
+          matInput
+          required
+        />
+        <button
+          aria-label="Toggle visibility"
+          [disabled]="signInFormGroup.controls.password.disabled"
+          (click)="togglePasswordVisibility()"
+          matIconButton
+          matSuffix
+          type="button"
+        >
+          <mat-icon>{{
+            _isPasswordHidden ? 'visibility' : 'visibility_off'
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
+    </form>
   </mat-card-content>
   <mat-card-actions>
-<button
-            [disabled]="signInFormGroup.disabled || signInFormGroup.invalid"
-            form="sign-in-form"
-            matButton="filled"
-            type="submit"
-          >Sign in</button>
-          <button
-            [disabled]="signInFormGroup.disabled"
-            form="sign-in-form"
-            matButton
-            type="reset"
-          >Reset</button>
+    <button
+      [disabled]="signInFormGroup.disabled || signInFormGroup.invalid"
+      form="sign-in-form"
+      matButton="filled"
+      type="submit"
+    >
+      Sign in
+    </button>
+    <button
+      [disabled]="signInFormGroup.disabled"
+      form="sign-in-form"
+      matButton
+      type="reset"
+    >
+      Reset
+    </button>
   </mat-card-actions>
   <mat-card-footer>
     @let _isLoading = isLoading();
-    <mat-progress-bar mode="indeterminate" [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"></mat-progress-bar>
+    <mat-progress-bar
+      mode="indeterminate"
+      [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"
+    ></mat-progress-bar>
   </mat-card-footer>
 </mat-card>

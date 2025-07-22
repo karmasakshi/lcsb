@@ -5,8 +5,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'lcsb-bp-chart-form',
   imports: [],
   templateUrl: './bp-chart-form.html',
-  styleUrl: './bp-chart-form.scss'
+  styleUrl: './bp-chart-form.scss',
 })
-export class BpChartForm {
-
-}
+export class BpChartForm {}
