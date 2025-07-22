@@ -51,6 +51,7 @@ export class SignInForm {
     }
 
     this.isLoading.set(true);
+
     this.signInFormGroup.disable();
 
     try {
@@ -68,4 +69,7 @@ export class SignInForm {
     }
   }
 
+  public togglePasswordVisibility():void {
+    this.isPasswordHidden.update(isPasswordHidden=>!isPasswordHidden);
+  }
 }

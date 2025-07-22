@@ -22,3 +22,17 @@ html {
 
 html, body { height: 100%; }
 body { margin: 0; }
+
+.mat-mdc-form-field {
+  width: 100%;
+
+  .mat-mdc-form-field-icon-suffix {
+    padding: 0 8px !important;
+  }
+}
+
+.mat-mdc-card {
+  .mat-mdc-card-actions {
+    gap: 8px;
+  }
+}
