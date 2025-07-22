@@ -2,6 +2,9 @@
 
 # Features
 
+- Linting via ESLint
+- Code formatting via Prettier
+
 ## Routes
 
 - `/`: [HomePage](./src/app/components/home-page/home-page.ts)
