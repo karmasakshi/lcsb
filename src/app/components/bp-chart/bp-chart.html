@@ -2,6 +2,7 @@
   <mat-card style="min-width: 960px">
     <mat-card-content>
       <highcharts-chart
+        (chartInstance)="setChart($event)"
         [options]="options"
         [(update)]="updateFlag"
         [oneToOne]="oneToOneFlag"

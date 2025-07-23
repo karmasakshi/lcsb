@@ -7,6 +7,7 @@ import {
   untracked,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { Chart } from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 
 @Component({
@@ -19,6 +20,7 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 export class BpChart {
   public readonly bloodPressures: InputSignal<number[]> = input.required();
 
+  private _chart: Chart | undefined;
   private readonly _styleOptions: Highcharts.Options;
 
   public readonly oneToOneFlag: boolean;
@@ -26,6 +28,8 @@ export class BpChart {
   public readonly updateFlag: boolean;
 
   public constructor() {
+    this._chart = undefined;
+
     this._styleOptions = {
       chart: {
         backgroundColor: 'transparent',
@@ -57,6 +61,11 @@ export class BpChart {
       },
       credits: {
         enabled: false,
+      },
+      plotOptions: {
+        histogram: {
+          binWidth: 1,
+        },
       },
     };
 
@@ -107,7 +116,13 @@ export class BpChart {
             },
           ],
         };
+
+        this._chart?.redraw();
       });
     });
+  }
+
+  public setChart(chart: Chart): void {
+    this._chart = chart;
   }
 }

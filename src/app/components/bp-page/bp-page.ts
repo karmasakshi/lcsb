@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { Bp } from '../../services/bp/bp';
 import { BpChart } from '../bp-chart/bp-chart';
 
@@ -12,7 +19,7 @@ import { BpChart } from '../bp-chart/bp-chart';
 export class BpPage implements OnInit {
   private readonly _bpService = inject(Bp);
 
-  public readonly bloodPressures: WritableSignal<number[]>
+  public readonly bloodPressures: WritableSignal<number[]>;
   public readonly isLoading: WritableSignal<boolean>;
 
   public constructor() {
