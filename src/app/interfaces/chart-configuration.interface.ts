@@ -1,6 +1,6 @@
 export interface ChartConfiguration {
   axisType: 'linear' | 'logarithmic';
-  maximumValue: number | undefined;
-  minimumValue: number | undefined;
+  maximumValue: number | null;
+  minimumValue: number | null;
   refreshInterval: number;
 }

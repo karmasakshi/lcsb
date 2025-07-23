@@ -7,12 +7,11 @@
     align-items: center;
   "
 >
-  @let _isLoading = isLoading();
   <mat-card style="max-width: 960px; overflow: hidden; width: 100%">
     <mat-card-content>
       @let _bloodPressures = bloodPressures();
       @let _chartConfiguration = chartConfiguration();
-      @if (_isLoading) {
+      @if (isLoading) {
         <div style="height: 572px"></div>
       } @else {
         <lcsb-bp-chart
@@ -24,7 +23,7 @@
     <mat-card-footer>
       <mat-progress-bar
         mode="indeterminate"
-        [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"
+        [style]="{ visibility: isLoading ? 'visible' : 'hidden' }"
       ></mat-progress-bar>
     </mat-card-footer>
   </mat-card>
@@ -36,9 +35,9 @@
         (ngSubmit)="
           setChartConfiguration({
             maximumValue:
-              chartConfigurationFormGroup.controls.maximumValue.value ?? 140,
+              chartConfigurationFormGroup.controls.maximumValue.value ?? null,
             minimumValue:
-              chartConfigurationFormGroup.controls.minimumValue.value ?? 60,
+              chartConfigurationFormGroup.controls.minimumValue.value ?? null,
             refreshInterval:
               chartConfigurationFormGroup.controls.refreshInterval.value ?? 5,
             axisType:
@@ -57,12 +56,7 @@
         <p></p>
         <mat-form-field>
           <mat-label>Maximum Value</mat-label>
-          <input
-            formControlName="maximumValue"
-            matInput
-            required
-            type="number"
-          />
+          <input formControlName="maximumValue" matInput type="number" />
           @if (
             chartConfigurationFormGroup.controls.maximumValue.touched &&
             chartConfigurationFormGroup.controls.maximumValue.errors?.[
@@ -74,12 +68,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Minimum Value</mat-label>
-          <input
-            formControlName="minimumValue"
-            matInput
-            required
-            type="number"
-          />
+          <input formControlName="minimumValue" matInput type="number" />
           @if (
             chartConfigurationFormGroup.controls.minimumValue.touched &&
             chartConfigurationFormGroup.controls.minimumValue.errors?.[

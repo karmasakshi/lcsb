@@ -29,6 +29,7 @@ export class BpChart implements OnInit, OnDestroy {
   private readonly _chart = signal<Chart | undefined>(undefined);
   private _intervalId: number | undefined;
   private readonly _liveData: WritableSignal<number[]>;
+  private readonly _binWidth: number;
   private readonly _maxValues: number;
 
   public readonly bloodPressures: InputSignal<number[]> = input.required();
@@ -41,6 +42,7 @@ export class BpChart implements OnInit, OnDestroy {
   public constructor() {
     this._chart.set(undefined);
 
+    this._binWidth = 10;
     this._intervalId = undefined;
 
     this._liveData = signal([]);
@@ -71,7 +73,9 @@ export class BpChart implements OnInit, OnDestroy {
             yAxis: this._getYAxis(scale),
             xAxis: {
               min: config.minimumValue,
-              max: config.maximumValue,
+              max: config.maximumValue
+                ? config.maximumValue - this._binWidth
+                : undefined,
             },
           },
           true,
@@ -130,8 +134,8 @@ export class BpChart implements OnInit, OnDestroy {
 
   private _getOptions(
     scale?: 'linear' | 'logarithmic',
-    min?: number,
-    max?: number,
+    min?: number | null,
+    max?: number | null,
   ): Options {
     return {
       chart: {
@@ -171,7 +175,7 @@ export class BpChart implements OnInit, OnDestroy {
       credits: { enabled: false },
       plotOptions: {
         histogram: {
-          binWidth: 10,
+          binWidth: this._binWidth,
         },
       },
       series: [

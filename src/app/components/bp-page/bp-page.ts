@@ -45,33 +45,29 @@ export class BpPage implements OnInit {
 
   public readonly bloodPressures: WritableSignal<number[]>;
   public readonly chartConfiguration: WritableSignal<ChartConfiguration>;
-  public readonly isLoading: WritableSignal<boolean>;
   public readonly chartConfigurationFormGroup: FormGroup<{
+    axisType: FormControl<null | 'linear' | 'logarithmic'>;
     maximumValue: FormControl<null | number>;
     minimumValue: FormControl<null | number>;
     refreshInterval: FormControl<null | number>;
-    axisType: FormControl<null | 'linear' | 'logarithmic'>;
   }>;
+  public isLoading: boolean;
 
   public constructor() {
-    this.chartConfiguration = signal({
-      maximumValue: undefined,
-      minimumValue: undefined,
-      refreshInterval: 5,
-      axisType: 'linear',
-    });
-
     this.bloodPressures = signal([]);
 
-    this.isLoading = signal(false);
+    this.chartConfiguration = signal({
+      axisType: 'linear',
+      maximumValue: null,
+      minimumValue: null,
+      refreshInterval: 5,
+    });
 
     this.chartConfigurationFormGroup = this._formBuilder.group({
-      maximumValue: this._formBuilder.control<null | number>(140, [
-        Validators.required,
+      maximumValue: this._formBuilder.control<null | number>(null, [
         Validators.min(1),
       ]),
-      minimumValue: this._formBuilder.control<null | number>(60, [
-        Validators.required,
+      minimumValue: this._formBuilder.control<null | number>(null, [
         Validators.min(1),
       ]),
       refreshInterval: this._formBuilder.control<null | number>(5, [
@@ -83,6 +79,8 @@ export class BpPage implements OnInit {
         [Validators.required],
       ),
     });
+
+    this.isLoading = false;
   }
 
   public ngOnInit(): void {
@@ -90,22 +88,21 @@ export class BpPage implements OnInit {
   }
 
   public async getBloodPressures() {
-    if (this.isLoading()) {
+    if (this.isLoading) {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isLoading = true;
 
     this.chartConfigurationFormGroup.disable();
 
     try {
       const { blood_pressures } = await this._bpService.getBloodPressures();
-
       this.bloodPressures.set(blood_pressures);
     } catch (error: unknown) {
       console.log(error);
     } finally {
-      this.isLoading.set(false);
+      this.isLoading = false;
       this.chartConfigurationFormGroup.enable();
     }
   }

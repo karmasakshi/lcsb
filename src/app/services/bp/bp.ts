@@ -22,8 +22,8 @@ export class Bp {
   }
 
   public getRandomBloodPressure(): number {
-    const minimum = 90;
     const maximum = 140;
+    const minimum = 90;
 
     return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
   }
