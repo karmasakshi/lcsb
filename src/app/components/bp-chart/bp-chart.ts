@@ -30,7 +30,6 @@ export class BpChart implements OnInit, OnDestroy {
   private _intervalId: number | undefined;
   private readonly _liveData: WritableSignal<number[]>;
   private readonly _maxValues: number;
-  private readonly _styleOptions: Options;
   private readonly _updateInterval;
 
   public readonly bloodPressures: InputSignal<number[]> = input.required();
@@ -46,43 +45,10 @@ export class BpChart implements OnInit, OnDestroy {
 
     this._maxValues = 5;
 
-    this._styleOptions = {
-      chart: {
-        backgroundColor: 'transparent',
-      },
-      title: {
-        text: 'Blood Pressure Histogram',
-        style: { font: 'var(--mat-sys-body-large)' },
-      },
-      xAxis: {
-        title: {
-          text: 'Blood Pressure',
-          style: { font: 'var(--mat-sys-body-small)' },
-        },
-        labels: { style: { font: 'var(--mat-sys-body-small)' } },
-      },
-      yAxis: {
-        title: {
-          text: 'Frequency',
-          style: { font: 'var(--mat-sys-body-small)' },
-        },
-        labels: { style: { font: 'var(--mat-sys-body-small)' } },
-      },
-      legend: {
-        itemStyle: { font: 'var(--mat-sys-body-medium)' },
-      },
-      credits: { enabled: false },
-      plotOptions: {
-        histogram: {
-          binWidth: 1,
-        },
-      },
-    };
-
     this._updateInterval = 5000;
 
     this.options = {
-      ...this._styleOptions,
+      ...this._getStyleOptions(),
       series: [
         {
           name: 'Blood Pressure Distribution',
@@ -145,5 +111,40 @@ export class BpChart implements OnInit, OnDestroy {
       const shouldShift = scatterSeries.data.length >= this._maxValues;
       scatterSeries.addPoint(newValue, true, shouldShift, true);
     }
+  }
+
+  private _getStyleOptions():Options {
+    return {
+      chart: {
+        backgroundColor: 'transparent',
+      },
+      title: {
+        text: 'Blood Pressure Histogram',
+        style: { font: 'var(--mat-sys-body-large)' },
+      },
+      xAxis: {
+        title: {
+          text: 'Blood Pressure',
+          style: { font: 'var(--mat-sys-body-small)' },
+        },
+        labels: { style: { font: 'var(--mat-sys-body-small)' } },
+      },
+      yAxis: {
+        title: {
+          text: 'Frequency',
+          style: { font: 'var(--mat-sys-body-small)' },
+        },
+        labels: { style: { font: 'var(--mat-sys-body-small)' } },
+      },
+      legend: {
+        itemStyle: { font: 'var(--mat-sys-body-medium)' },
+      },
+      credits: { enabled: false },
+      plotOptions: {
+        histogram: {
+          binWidth: 1,
+        },
+      },
+    };
   }
 }
