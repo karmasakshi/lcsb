@@ -39,9 +39,9 @@ import { User } from '../../services/user/user';
   styleUrl: './sign-in-form.scss',
 })
 export class SignInForm {
-  private _formBuilder = inject(FormBuilder);
-  private _router = inject(Router);
-  private _userService = inject(User);
+  private readonly _formBuilder = inject(FormBuilder);
+  private readonly _router = inject(Router);
+  private readonly _userService = inject(User);
 
   public readonly isLoading: WritableSignal<boolean>;
   public readonly isPasswordHidden: WritableSignal<boolean>;
@@ -67,7 +67,7 @@ export class SignInForm {
     });
   }
 
-  public async signIn(email: string, password: string) {
+  public async signIn(email: string, password: string): Promise<void> {
     if (this.isLoading()) {
       return;
     }
@@ -78,7 +78,6 @@ export class SignInForm {
 
     try {
       await this._userService.signIn(email, password);
-
       void this._router.navigateByUrl('/bp');
     } catch (error: unknown) {
       console.log(error);
