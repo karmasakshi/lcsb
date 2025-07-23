@@ -11,7 +11,6 @@ import {
   untracked,
   WritableSignal,
 } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import { Chart, Options, Series } from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { Bp } from '../../services/bp/bp';
@@ -19,7 +18,7 @@ import { Bp } from '../../services/bp/bp';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-bp-chart',
-  imports: [MatCardModule, HighchartsChartComponent],
+  imports: [HighchartsChartComponent],
   templateUrl: './bp-chart.html',
   styleUrl: './bp-chart.scss',
 })

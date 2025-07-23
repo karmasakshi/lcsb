@@ -1,11 +1,5 @@
-<section style="padding: 16px; display: flex; justify-content: center">
-  <mat-card style="min-width: 960px">
-    <mat-card-content>
-      <highcharts-chart
-        (chartInstance)="setChart($event)"
-        [options]="options"
-        style="height: 480px; display: block"
-      />
-    </mat-card-content>
-  </mat-card>
-</section>
+<highcharts-chart
+  (chartInstance)="setChart($event)"
+  [options]="options"
+  style="display: block; height: 480px"
+/>

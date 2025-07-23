@@ -1,2 +1,23 @@
-@let _bloodPressures = bloodPressures();
-<lcsb-bp-chart scaleType="linear" [updateInterval]="1000"  [bloodPressures]="_bloodPressures"></lcsb-bp-chart>
+<section style="padding: 16px; display: flex; justify-content: center">
+  @let _isLoading = isLoading();
+  <mat-card style="max-width: 960px; overflow: hidden; width: 100%">
+    <mat-card-content>
+      @let _bloodPressures = bloodPressures();
+      @if (_isLoading) {
+        <div style="height: 480px"></div>
+      } @else {
+        <lcsb-bp-chart
+          scaleType="linear"
+          [updateInterval]="1000"
+          [bloodPressures]="_bloodPressures"
+        ></lcsb-bp-chart>
+      }
+    </mat-card-content>
+    <mat-card-footer>
+      <mat-progress-bar
+        mode="indeterminate"
+        [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"
+      ></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+</section>

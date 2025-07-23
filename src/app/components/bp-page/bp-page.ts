@@ -6,13 +6,15 @@ import {
   signal,
   WritableSignal,
 } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Bp } from '../../services/bp/bp';
 import { BpChart } from '../bp-chart/bp-chart';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-bp-page',
-  imports: [BpChart],
+  imports: [MatCardModule, MatProgressBarModule, BpChart],
   templateUrl: './bp-page.html',
   styleUrl: './bp-page.scss',
 })
