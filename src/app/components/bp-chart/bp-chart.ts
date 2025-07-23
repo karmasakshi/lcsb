@@ -116,32 +116,32 @@ export class BpChart implements OnInit, OnDestroy {
       const data = this._data();
 
       untracked(() => {
-      if (this._chart) {
-        const scatterSeries = this._chart.get('bp-data') as
-          | Series
-          | undefined;
-        scatterSeries?.setData([...data], true, true, false);
-      } else {
-        this.options = {
-          ...this._styleOptions,
-          series: [
-            {
-              name: 'Blood Pressure Distribution',
-              type: 'histogram',
-              baseSeries: 'bp-data',
-              zIndex: 1,
-            },
-            {
-              name: 'Blood Pressure',
-              type: 'scatter',
-              data: [...data],
-              id: 'bp-data',
-              visible: false,
-              showInLegend: false,
-            },
-          ],
-        };
-      }
+        if (this._chart) {
+          const scatterSeries = this._chart.get('bp-data') as
+            | Series
+            | undefined;
+          scatterSeries?.setData([...data], true, true, false);
+        } else {
+          this.options = {
+            ...this._styleOptions,
+            series: [
+              {
+                name: 'Blood Pressure Distribution',
+                type: 'histogram',
+                baseSeries: 'bp-data',
+                zIndex: 1,
+              },
+              {
+                name: 'Blood Pressure',
+                type: 'scatter',
+                data: [...data],
+                id: 'bp-data',
+                visible: false,
+                showInLegend: false,
+              },
+            ],
+          };
+        }
       });
     });
   }
