@@ -32,7 +32,8 @@ export class BpChart implements OnInit, OnDestroy {
   private readonly _maxValues: number;
 
   public readonly bloodPressures: InputSignal<number[]> = input.required();
-  public readonly scaleType: InputSignal<'linear' | 'logarithmic'> = input.required();
+  public readonly scaleType: InputSignal<'linear' | 'logarithmic'> =
+    input.required();
   public readonly updateInterval: InputSignal<number> = input.required();
 
   public options: Options;
@@ -132,7 +133,7 @@ export class BpChart implements OnInit, OnDestroy {
       credits: { enabled: false },
       plotOptions: {
         histogram: {
-          binWidth: 1,
+          binWidth: 10,
         },
       },
       series: [
