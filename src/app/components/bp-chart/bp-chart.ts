@@ -27,8 +27,9 @@ export class BpChart implements OnInit, OnDestroy {
   private readonly _bpService = inject(Bp);
 
   private _chart: Chart | undefined;
-  private readonly _data: WritableSignal<number[]>;
   private _intervalId: number | undefined;
+  private readonly _liveData: WritableSignal<number[]>;
+  private readonly _maxValues: number;
   private readonly _styleOptions: Options;
   private readonly _updateInterval;
 
@@ -39,9 +40,11 @@ export class BpChart implements OnInit, OnDestroy {
   public constructor() {
     this._chart = undefined;
 
-    this._data = signal([]);
-
     this._intervalId = undefined;
+
+    this._liveData = signal([]);
+
+    this._maxValues = 5;
 
     this._styleOptions = {
       chart: {
@@ -49,9 +52,7 @@ export class BpChart implements OnInit, OnDestroy {
       },
       title: {
         text: 'Blood Pressure Histogram',
-        style: {
-          font: 'var(--mat-sys-body-large)',
-        },
+        style: { font: 'var(--mat-sys-body-large)' },
       },
       xAxis: {
         title: {
@@ -68,13 +69,9 @@ export class BpChart implements OnInit, OnDestroy {
         labels: { style: { font: 'var(--mat-sys-body-small)' } },
       },
       legend: {
-        itemStyle: {
-          font: 'var(--mat-sys-body-medium)',
-        },
+        itemStyle: { font: 'var(--mat-sys-body-medium)' },
       },
-      credits: {
-        enabled: false,
-      },
+      credits: { enabled: false },
       plotOptions: {
         histogram: {
           binWidth: 1,
@@ -106,41 +103,11 @@ export class BpChart implements OnInit, OnDestroy {
 
     effect(() => {
       const bloodPressures = this.bloodPressures();
+      const scatterSeries = this._chart?.get('bp-data') as Series | undefined;
 
       untracked(() => {
-        this._data.set([...bloodPressures]);
-      });
-    });
-
-    effect(() => {
-      const data = this._data();
-
-      untracked(() => {
-        if (this._chart) {
-          const scatterSeries = this._chart.get('bp-data') as
-            | Series
-            | undefined;
-          scatterSeries?.setData([...data], true, true, false);
-        } else {
-          this.options = {
-            ...this._styleOptions,
-            series: [
-              {
-                name: 'Blood Pressure Distribution',
-                type: 'histogram',
-                baseSeries: 'bp-data',
-                zIndex: 1,
-              },
-              {
-                name: 'Blood Pressure',
-                type: 'scatter',
-                data: [...data],
-                id: 'bp-data',
-                visible: false,
-                showInLegend: false,
-              },
-            ],
-          };
+        if (scatterSeries) {
+          scatterSeries.setData([...bloodPressures], true, true, true);
         }
       });
     });
@@ -163,9 +130,20 @@ export class BpChart implements OnInit, OnDestroy {
   }
 
   private _fetchLiveData(): void {
-    this._data.update((data) => [
-      ...data,
-      this._bpService.getRandomBloodPressure(),
-    ]);
+    const newValue = this._bpService.getRandomBloodPressure();
+
+    this._liveData.update((liveData) => {
+      const updated = [...liveData, newValue];
+      return updated.length > this._maxValues
+        ? updated.slice(-this._maxValues)
+        : updated;
+    });
+
+    const scatterSeries = this._chart?.get('bp-data') as Series | undefined;
+
+    if (scatterSeries) {
+      const shouldShift = scatterSeries.data.length >= this._maxValues;
+      scatterSeries.addPoint(newValue, true, shouldShift, true);
+    }
   }
 }
