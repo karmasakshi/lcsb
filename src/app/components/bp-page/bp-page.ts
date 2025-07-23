@@ -86,10 +86,10 @@ export class BpPage implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.getUsersData();
+    this.getBloodPressures();
   }
 
-  public async getUsersData() {
+  public async getBloodPressures() {
     if (this.isLoading()) {
       return;
     }
@@ -99,7 +99,7 @@ export class BpPage implements OnInit {
     this.chartConfigurationFormGroup.disable();
 
     try {
-      const { blood_pressures } = await this._bpService.getUsersData();
+      const { blood_pressures } = await this._bpService.getBloodPressures();
 
       this.bloodPressures.set(blood_pressures);
     } catch (error: unknown) {

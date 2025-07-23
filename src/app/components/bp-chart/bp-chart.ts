@@ -139,20 +139,34 @@ export class BpChart implements OnInit, OnDestroy {
       },
       title: {
         text: 'Blood Pressure Histogram',
-        style: { font: 'var(--mat-sys-body-large)', color: 'var(--mat-sys-on-background)' },
+        style: {
+          font: 'var(--mat-sys-body-large)',
+          color: 'var(--mat-sys-on-background)',
+        },
       },
       xAxis: {
         title: {
           text: 'Blood Pressure',
-          style: { font: 'var(--mat-sys-body-small)', color: 'var(--mat-sys-on-background)' },
+          style: {
+            font: 'var(--mat-sys-body-small)',
+            color: 'var(--mat-sys-on-background)',
+          },
         },
-        labels: { style: { color: 'var(--mat-sys-on-background)', font: 'var(--mat-sys-body-small)' } },
+        labels: {
+          style: {
+            color: 'var(--mat-sys-on-background)',
+            font: 'var(--mat-sys-body-small)',
+          },
+        },
         min: min,
         max: max,
       },
       yAxis: this._getYAxis(scale ?? 'linear'),
       legend: {
-        itemStyle: { font: 'var(--mat-sys-body-medium)', color: 'var(--mat-sys-on-background)' },
+        itemStyle: {
+          font: 'var(--mat-sys-body-medium)',
+          color: 'var(--mat-sys-on-background)',
+        },
       },
       credits: { enabled: false },
       plotOptions: {
@@ -184,10 +198,16 @@ export class BpChart implements OnInit, OnDestroy {
       type: scale,
       title: {
         text: scale === 'logarithmic' ? 'Log (Frequency)' : 'Frequency',
-        style: { font: 'var(--mat-sys-body-small)', color: 'var(--mat-sys-on-background)' },
+        style: {
+          font: 'var(--mat-sys-body-small)',
+          color: 'var(--mat-sys-on-background)',
+        },
       },
       labels: {
-        style: { font: 'var(--mat-sys-body-small)', color: 'var(--mat-sys-on-background)' },
+        style: {
+          font: 'var(--mat-sys-body-small)',
+          color: 'var(--mat-sys-on-background)',
+        },
         format: '{value:.1f}',
       },
       gridLineColor: 'var(--mat-sys-outline-variant)',

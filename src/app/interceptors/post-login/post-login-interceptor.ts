@@ -1,11 +1,15 @@
 import {
+  HttpEvent,
   HttpHeaders,
   HttpInterceptorFn,
   HttpResponse,
 } from '@angular/common/http';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-export const postLoginInterceptor: HttpInterceptorFn = (req, next) => {
+export const postLoginInterceptor: HttpInterceptorFn = (
+  req,
+  next,
+): Observable<HttpEvent<unknown>> => {
   if (req.method === 'POST' && req.url.endsWith('/login')) {
     return of(
       new HttpResponse({
