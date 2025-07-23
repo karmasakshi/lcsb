@@ -1,14 +1,22 @@
-<section style="padding: 16px; display: flex; justify-content: center">
+<section
+  style="
+    padding: 16px;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+  "
+>
   @let _isLoading = isLoading();
   <mat-card style="max-width: 960px; overflow: hidden; width: 100%">
     <mat-card-content>
       @let _bloodPressures = bloodPressures();
+      @let _chartConfiguration = chartConfiguration();
       @if (_isLoading) {
-        <div style="height: 480px"></div>
+        <div style="height: 572px"></div>
       } @else {
         <lcsb-bp-chart
-          scaleType="linear"
-          [updateInterval]="1000"
+          [chartConfiguration]="_chartConfiguration"
           [bloodPressures]="_bloodPressures"
         ></lcsb-bp-chart>
       }
@@ -19,5 +27,98 @@
         [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"
       ></mat-progress-bar>
     </mat-card-footer>
+  </mat-card>
+  <mat-card style="max-width: 480px; overflow: hidden; width: 100%">
+    <mat-card-content>
+      <form
+        id="chart-configuration-form"
+        [formGroup]="chartConfigurationFormGroup"
+        (ngSubmit)="
+          setChartConfiguration({
+            maximumValue:
+              chartConfigurationFormGroup.controls.maximumValue.value ?? 140,
+            minimumValue:
+              chartConfigurationFormGroup.controls.minimumValue.value ?? 60,
+            refreshInterval:
+              chartConfigurationFormGroup.controls.refreshInterval.value ?? 5,
+            axisType:
+              chartConfigurationFormGroup.controls.axisType.value ?? 'linear',
+          })
+        "
+      >
+        <mat-form-field>
+          <mat-label>Maximum Value</mat-label>
+          <input
+            formControlName="maximumValue"
+            matInput
+            required
+            type="number"
+          />
+          @if (
+            chartConfigurationFormGroup.controls.maximumValue.touched &&
+            chartConfigurationFormGroup.controls.maximumValue.errors?.[
+              'required'
+            ]
+          ) {
+            <mat-error>Maximum Value is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Minimum Value</mat-label>
+          <input
+            formControlName="minimumValue"
+            matInput
+            required
+            type="number"
+          />
+          @if (
+            chartConfigurationFormGroup.controls.minimumValue.touched &&
+            chartConfigurationFormGroup.controls.minimumValue.errors?.[
+              'required'
+            ]
+          ) {
+            <mat-error>Minimum Value is required</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Refresh Interval (Seconds)</mat-label>
+          <input
+            formControlName="refreshInterval"
+            matInput
+            required
+            type="number"
+          />
+          @if (
+            chartConfigurationFormGroup.controls.refreshInterval.touched &&
+            chartConfigurationFormGroup.controls.refreshInterval.errors?.[
+              'required'
+            ]
+          ) {
+            <mat-error>Refresh Interval is required</mat-error>
+          }
+        </mat-form-field>
+        <div style="text-align: center">
+          <mat-button-toggle-group formControlName="axisType">
+            <mat-button-toggle value="linear">Linear</mat-button-toggle>
+            <mat-button-toggle value="logarithmic"
+              >Logarithmic</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+        </div>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <button
+        [disabled]="
+          chartConfigurationFormGroup.disabled ||
+          chartConfigurationFormGroup.invalid
+        "
+        form="chart-configuration-form"
+        matButton="filled"
+        type="submit"
+      >
+        Update chart
+      </button>
+    </mat-card-actions>
   </mat-card>
 </section>

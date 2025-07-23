@@ -14,6 +14,7 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { Chart, Options, Series } from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
+import { ChartConfiguration } from '../../interfaces/chart-configuration.interface';
 import { Bp } from '../../services/bp/bp';
 
 @Component({
@@ -32,9 +33,8 @@ export class BpChart implements OnInit, OnDestroy {
   private readonly _maxValues: number;
 
   public readonly bloodPressures: InputSignal<number[]> = input.required();
-  public readonly scaleType: InputSignal<'linear' | 'logarithmic'> =
+  public readonly chartConfiguration: InputSignal<ChartConfiguration> =
     input.required();
-  public readonly updateInterval: InputSignal<number> = input.required();
 
   public liveReading: WritableSignal<number>;
   public options: Options;
@@ -64,7 +64,7 @@ export class BpChart implements OnInit, OnDestroy {
     });
 
     effect(() => {
-      const scale = this.scaleType() || 'linear';
+      const scale = this.chartConfiguration().axisType || 'linear';
 
       if (this._chart) {
         this._chart.update(
@@ -82,7 +82,7 @@ export class BpChart implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this._intervalId = setInterval(() => {
       this._fetchLiveData();
-    }, this.updateInterval());
+    }, this.chartConfiguration().refreshInterval * 1000);
   }
 
   public ngOnDestroy(): void {
