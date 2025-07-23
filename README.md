@@ -19,7 +19,21 @@ Login with any valid email and password.
 
 ## Features
 
-## Components
+- SPA built with latest Angular with Material Design components.
+- Automatic light or dark mode based on the OS theme.
+- Mocked API calls with loading state and synthetic delays.
+- Forms with validations.
+
+### Exclusions
+
+- Internationalization
+- Unit and E2E tests
+- Releasing and versioning
+- Icons
+- SEO tags
+- sitemap.xml and robots.txt
+
+### Components
 
 - [App](./src/app/components/app/app.ts): Root component.
 - [BpChart](./src/app/components/bp-chart/bp-chart.ts): Blood pressure chart component.
@@ -46,9 +60,3 @@ Login with any valid email and password.
 
 - [Bp](./src/app/services/bp/bp.ts): Gets the blood pressure data of the signed-in user.
 - [User](./src/app/services/user/user.ts): Manages session of the user.
-
-### Exclusions
-
-- Internationalization
-- Unit and E2E tests
-- Releasing and versioning
