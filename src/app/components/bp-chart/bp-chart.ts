@@ -25,13 +25,14 @@ export class BpChart {
 
   public readonly oneToOneFlag: boolean;
   public options: Highcharts.Options;
-  public readonly updateFlag: boolean;
+  public updateFlag: boolean;
 
   public constructor() {
     this._chart = undefined;
 
     this._styleOptions = {
       chart: {
+        animation: true,
         backgroundColor: 'transparent',
       },
       title: {
@@ -85,18 +86,24 @@ export class BpChart {
           type: 'scatter',
           data: [],
           id: 'bp-data',
-          marker: { radius: 2 },
           visible: false,
+          showInLegend: false,
         },
       ],
     };
 
-    this.updateFlag = true;
+    this.updateFlag = false;
 
     effect(() => {
       const bloodPressures: number[] = this.bloodPressures();
 
       untracked(() => {
+      if (this._chart) {
+        const scatterSeries = this._chart?.get(
+          'bp-data',
+        ) as Highcharts.Series;
+        scatterSeries?.setData([...bloodPressures], true, true, false);
+      } else {
         this.options = {
           ...this._styleOptions,
           series: [
@@ -111,13 +118,14 @@ export class BpChart {
               type: 'scatter',
               data: [...bloodPressures],
               id: 'bp-data',
-              marker: { radius: 2 },
               visible: false,
+              showInLegend: false,
             },
           ],
         };
 
-        this._chart?.redraw();
+        this.updateFlag = true;
+      }
       });
     });
   }
