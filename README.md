@@ -27,6 +27,7 @@ Login with any valid email and password.
 ### Exclusions
 
 - Internationalization
+- Session persistence
 - Unit and E2E tests
 - Releasing and versioning
 - Icons
