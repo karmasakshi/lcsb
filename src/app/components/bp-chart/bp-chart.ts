@@ -7,7 +7,6 @@ import {
   InputSignal,
   OnDestroy,
   signal,
-  untracked,
   WritableSignal
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,7 +25,7 @@ import { Bp } from '../../services/bp/bp';
 export class BpChart implements OnDestroy {
   private readonly _bpService = inject(Bp);
 
-  private _chart: Chart | undefined;
+  private readonly _chart = signal<Chart | undefined>(undefined);
   private _intervalId: number | undefined;
   private readonly _liveData: WritableSignal<number[]>;
   private readonly _maxValues: number;
@@ -39,7 +38,7 @@ export class BpChart implements OnDestroy {
   public options: Options;
 
   public constructor() {
-    this._chart = undefined;
+    this._chart.set(undefined);
 
     this._intervalId = undefined;
 
@@ -52,22 +51,21 @@ export class BpChart implements OnDestroy {
     this.options = this._getOptions('linear');
 
     effect(() => {
+      const chart = this._chart();
       const bloodPressures = this.bloodPressures();
-      const scatterSeries = this._chart?.get('bp-data') as Series | undefined;
-
-      untracked(() => {
-        if (scatterSeries) {
-          scatterSeries.setData([...bloodPressures], true, true, true);
-        }
-      });
+      if (!chart) return;
+      const scatterSeries = chart.get('bp-data') as Series | undefined;
+      if (scatterSeries) {
+        scatterSeries.setData([...bloodPressures], true, true, true);
+      }
     });
 
     effect(() => {
       const config = this.chartConfiguration();
       const scale = config.axisType || 'linear';
 
-      if (this._chart) {
-        this._chart.update(
+      if (this._chart()) {
+        this._chart()?.update(
           {
             yAxis: this._getYAxis(scale),
           },
@@ -93,7 +91,7 @@ export class BpChart implements OnDestroy {
   }
 
   public setChart(chart: Chart): void {
-    this._chart = chart;
+    this._chart.set(chart);
   }
 
   private _fetchLiveData(): void {
@@ -106,11 +104,13 @@ export class BpChart implements OnDestroy {
         : updated;
     });
 
-    const scatterSeries = this._chart?.get('bp-data') as Series | undefined;
-
-    if (scatterSeries) {
-      const shouldShift = scatterSeries.data.length >= this._maxValues;
-      scatterSeries.addPoint(this.liveReading(), true, shouldShift, true);
+    const chart = this._chart();
+    if (chart) {
+      const scatterSeries = chart.get('bp-data') as Series | undefined;
+      if (scatterSeries) {
+        const shouldShift = scatterSeries.data.length >= this._maxValues;
+        scatterSeries.addPoint(this.liveReading(), true, shouldShift, true);
+      }
     }
   }
 
@@ -163,7 +163,7 @@ export class BpChart implements OnDestroy {
     return {
       type: scale,
       title: {
-        text: scale === 'logarithmic' ? 'Log(Frequency)' : 'Frequency',
+        text: scale === 'logarithmic' ? 'Log (Frequency)' : 'Frequency',
         style: { font: 'var(--mat-sys-body-small)' },
       },
       labels: {

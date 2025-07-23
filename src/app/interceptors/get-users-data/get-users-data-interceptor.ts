@@ -12,7 +12,7 @@ export const getUsersDataInterceptor: HttpInterceptorFn = (req, next) => {
     return of(
       new HttpResponse({
         body: {
-          blood_pressures: [60, 70, 80, 90, 100, 110, 120, 130, 140],
+          blood_pressures: [60, 70, 80, 90, 100, 110, 120, 135],
         },
         headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
         status: 200,
