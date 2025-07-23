@@ -11,6 +11,7 @@ import {
   untracked,
   WritableSignal,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Chart, Options, Series } from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
 import { Bp } from '../../services/bp/bp';
@@ -18,7 +19,7 @@ import { Bp } from '../../services/bp/bp';
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'lcsb-bp-chart',
-  imports: [HighchartsChartComponent],
+  imports: [MatIconModule, HighchartsChartComponent],
   templateUrl: './bp-chart.html',
   styleUrl: './bp-chart.scss',
 })
@@ -35,6 +36,7 @@ export class BpChart implements OnInit, OnDestroy {
     input.required();
   public readonly updateInterval: InputSignal<number> = input.required();
 
+  public liveReading: WritableSignal<number>;
   public options: Options;
 
   public constructor() {
@@ -45,6 +47,8 @@ export class BpChart implements OnInit, OnDestroy {
     this._liveData = signal([]);
 
     this._maxValues = 5;
+
+    this.liveReading = signal(0);
 
     this.options = this._getOptions('linear');
 
@@ -92,10 +96,10 @@ export class BpChart implements OnInit, OnDestroy {
   }
 
   private _fetchLiveData(): void {
-    const newValue = this._bpService.getRandomBloodPressure();
+    this.liveReading.set(this._bpService.getRandomBloodPressure());
 
     this._liveData.update((liveData) => {
-      const updated = [...liveData, newValue];
+      const updated = [...liveData, this.liveReading()];
       return updated.length > this._maxValues
         ? updated.slice(-this._maxValues)
         : updated;
@@ -105,7 +109,7 @@ export class BpChart implements OnInit, OnDestroy {
 
     if (scatterSeries) {
       const shouldShift = scatterSeries.data.length >= this._maxValues;
-      scatterSeries.addPoint(newValue, true, shouldShift, true);
+      scatterSeries.addPoint(this.liveReading(), true, shouldShift, true);
     }
   }
 
