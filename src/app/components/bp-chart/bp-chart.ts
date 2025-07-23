@@ -19,18 +19,14 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 export class BpChart {
   public readonly bloodPressures: InputSignal<number[]> = input.required();
 
-  private _scatterSeriesData: number[] = [];
+  private readonly _styleOptions: Highcharts.Options;
 
   public readonly oneToOneFlag: boolean;
-  public readonly options: Highcharts.Options;
+  public options: Highcharts.Options;
   public readonly updateFlag: boolean;
 
   public constructor() {
-    this._scatterSeriesData = [];
-
-    this.oneToOneFlag = true;
-
-    this.options = {
+    this._styleOptions = {
       chart: {
         backgroundColor: 'transparent',
       },
@@ -62,6 +58,12 @@ export class BpChart {
       credits: {
         enabled: false,
       },
+    };
+
+    this.oneToOneFlag = true;
+
+    this.options = {
+      ...this._styleOptions,
       series: [
         {
           name: 'Blood Pressure Distribution',
@@ -72,7 +74,7 @@ export class BpChart {
         {
           name: 'Blood Pressure',
           type: 'scatter',
-          data: this._scatterSeriesData,
+          data: [],
           id: 'bp-data',
           marker: { radius: 2 },
           visible: false,
@@ -86,7 +88,25 @@ export class BpChart {
       const bloodPressures: number[] = this.bloodPressures();
 
       untracked(() => {
-        (this.options.series![1] as Highcharts.SeriesScatterOptions).data = [...bloodPressures];
+        this.options = {
+          ...this._styleOptions,
+          series: [
+            {
+              name: 'Blood Pressure Distribution',
+              type: 'histogram',
+              baseSeries: 'bp-data',
+              zIndex: 1,
+            },
+            {
+              name: 'Blood Pressure',
+              type: 'scatter',
+              data: [...bloodPressures],
+              id: 'bp-data',
+              marker: { radius: 2 },
+              visible: false,
+            },
+          ],
+        };
       });
     });
   }
