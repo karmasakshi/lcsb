@@ -68,12 +68,15 @@ export class BpPage implements OnInit {
     this.chartConfigurationFormGroup = this._formBuilder.group({
       maximumValue: this._formBuilder.control<null | number>(140, [
         Validators.required,
+        Validators.min(1),
       ]),
       minimumValue: this._formBuilder.control<null | number>(60, [
         Validators.required,
+        Validators.min(1),
       ]),
       refreshInterval: this._formBuilder.control<null | number>(5, [
         Validators.required,
+        Validators.min(1),
       ]),
       axisType: this._formBuilder.control<null | 'linear' | 'logarithmic'>(
         'linear',

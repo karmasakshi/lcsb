@@ -6,10 +6,9 @@ import {
   input,
   InputSignal,
   OnDestroy,
-  OnInit,
   signal,
   untracked,
-  WritableSignal,
+  WritableSignal
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Chart, Options, Series } from 'highcharts';
@@ -24,7 +23,7 @@ import { Bp } from '../../services/bp/bp';
   templateUrl: './bp-chart.html',
   styleUrl: './bp-chart.scss',
 })
-export class BpChart implements OnInit, OnDestroy {
+export class BpChart implements OnDestroy {
   private readonly _bpService = inject(Bp);
 
   private _chart: Chart | undefined;
@@ -64,7 +63,8 @@ export class BpChart implements OnInit, OnDestroy {
     });
 
     effect(() => {
-      const scale = this.chartConfiguration().axisType || 'linear';
+      const config = this.chartConfiguration();
+      const scale = config.axisType || 'linear';
 
       if (this._chart) {
         this._chart.update(
@@ -76,13 +76,14 @@ export class BpChart implements OnInit, OnDestroy {
           false,
         );
       }
-    });
-  }
 
-  public ngOnInit(): void {
-    this._intervalId = setInterval(() => {
-      this._fetchLiveData();
-    }, this.chartConfiguration().refreshInterval * 1000);
+      if (this._intervalId) {
+        clearInterval(this._intervalId);
+      }
+      this._intervalId = setInterval(() => {
+        this._fetchLiveData();
+      }, config.refreshInterval * 1000);
+    });
   }
 
   public ngOnDestroy(): void {
