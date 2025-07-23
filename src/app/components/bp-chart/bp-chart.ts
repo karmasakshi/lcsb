@@ -30,9 +30,10 @@ export class BpChart implements OnInit, OnDestroy {
   private _intervalId: number | undefined;
   private readonly _liveData: WritableSignal<number[]>;
   private readonly _maxValues: number;
-  private readonly _updateInterval;
 
   public readonly bloodPressures: InputSignal<number[]> = input.required();
+  public readonly scaleType: InputSignal<'linear' | 'logarithmic'> = input.required();
+  public readonly updateInterval: InputSignal<number> = input.required();
 
   public options: Options;
 
@@ -45,27 +46,7 @@ export class BpChart implements OnInit, OnDestroy {
 
     this._maxValues = 5;
 
-    this._updateInterval = 5000;
-
-    this.options = {
-      ...this._getStyleOptions(),
-      series: [
-        {
-          name: 'Blood Pressure Distribution',
-          type: 'histogram',
-          baseSeries: 'bp-data',
-          zIndex: 1,
-        },
-        {
-          name: 'Blood Pressure',
-          type: 'scatter',
-          data: [],
-          id: 'bp-data',
-          visible: false,
-          showInLegend: false,
-        },
-      ],
-    };
+    this.options = this._getOptions('linear');
 
     effect(() => {
       const bloodPressures = this.bloodPressures();
@@ -77,12 +58,27 @@ export class BpChart implements OnInit, OnDestroy {
         }
       });
     });
+
+    effect(() => {
+      const scale = this.scaleType() || 'linear';
+
+      if (this._chart) {
+        this._chart.update(
+          {
+            yAxis: this._getYAxis(scale),
+          },
+          true,
+          true,
+          false,
+        );
+      }
+    });
   }
 
   public ngOnInit(): void {
     this._intervalId = setInterval(() => {
       this._fetchLiveData();
-    }, this._updateInterval);
+    }, this.updateInterval());
   }
 
   public ngOnDestroy(): void {
@@ -113,7 +109,7 @@ export class BpChart implements OnInit, OnDestroy {
     }
   }
 
-  private _getStyleOptions():Options {
+  private _getOptions(scale: 'linear' | 'logarithmic'): Options {
     return {
       chart: {
         backgroundColor: 'transparent',
@@ -129,13 +125,7 @@ export class BpChart implements OnInit, OnDestroy {
         },
         labels: { style: { font: 'var(--mat-sys-body-small)' } },
       },
-      yAxis: {
-        title: {
-          text: 'Frequency',
-          style: { font: 'var(--mat-sys-body-small)' },
-        },
-        labels: { style: { font: 'var(--mat-sys-body-small)' } },
-      },
+      yAxis: this._getYAxis(scale),
       legend: {
         itemStyle: { font: 'var(--mat-sys-body-medium)' },
       },
@@ -145,6 +135,37 @@ export class BpChart implements OnInit, OnDestroy {
           binWidth: 1,
         },
       },
+      series: [
+        {
+          name: 'Blood Pressure Distribution',
+          type: 'histogram',
+          baseSeries: 'bp-data',
+          zIndex: 1,
+        },
+        {
+          name: 'Blood Pressure',
+          type: 'scatter',
+          data: [],
+          id: 'bp-data',
+          visible: false,
+          showInLegend: false,
+        },
+      ],
+    };
+  }
+
+  private _getYAxis(scale: 'linear' | 'logarithmic'): Options['yAxis'] {
+    return {
+      type: scale,
+      title: {
+        text: scale === 'logarithmic' ? 'Log(Frequency)' : 'Frequency',
+        style: { font: 'var(--mat-sys-body-small)' },
+      },
+      labels: {
+        style: { font: 'var(--mat-sys-body-small)' },
+        format: '{value:.1f}',
+      },
+      minorTickInterval: scale === 'logarithmic' ? 0.1 : undefined,
     };
   }
 }
