@@ -2,13 +2,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  inject,
   input,
   InputSignal,
+  OnDestroy,
+  OnInit,
+  signal,
   untracked,
+  WritableSignal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
-import { Chart } from 'highcharts';
+import { Chart, Options, Series } from 'highcharts';
 import { HighchartsChartComponent } from 'highcharts-angular';
+import { Bp } from '../../services/bp/bp';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,22 +23,28 @@ import { HighchartsChartComponent } from 'highcharts-angular';
   templateUrl: './bp-chart.html',
   styleUrl: './bp-chart.scss',
 })
-export class BpChart {
-  public readonly bloodPressures: InputSignal<number[]> = input.required();
+export class BpChart implements OnInit, OnDestroy {
+  private readonly _bpService = inject(Bp);
 
   private _chart: Chart | undefined;
-  private readonly _styleOptions: Highcharts.Options;
+  private readonly _data: WritableSignal<number[]>;
+  private _intervalId: number | undefined;
+  private readonly _styleOptions: Options;
+  private readonly _updateInterval;
 
-  public readonly oneToOneFlag: boolean;
-  public options: Highcharts.Options;
-  public updateFlag: boolean;
+  public readonly bloodPressures: InputSignal<number[]> = input.required();
+
+  public options: Options;
 
   public constructor() {
     this._chart = undefined;
 
+    this._data = signal([]);
+
+    this._intervalId = undefined;
+
     this._styleOptions = {
       chart: {
-        animation: true,
         backgroundColor: 'transparent',
       },
       title: {
@@ -70,7 +82,7 @@ export class BpChart {
       },
     };
 
-    this.oneToOneFlag = true;
+    this._updateInterval = 5000;
 
     this.options = {
       ...this._styleOptions,
@@ -92,17 +104,23 @@ export class BpChart {
       ],
     };
 
-    this.updateFlag = false;
+    effect(() => {
+      const bloodPressures = this.bloodPressures();
+
+      untracked(() => {
+        this._data.set([...bloodPressures]);
+      });
+    });
 
     effect(() => {
-      const bloodPressures: number[] = this.bloodPressures();
+      const data = this._data();
 
       untracked(() => {
       if (this._chart) {
-        const scatterSeries = this._chart?.get(
-          'bp-data',
-        ) as Highcharts.Series;
-        scatterSeries?.setData([...bloodPressures], true, true, false);
+        const scatterSeries = this._chart.get('bp-data') as
+          | Series
+          | undefined;
+        scatterSeries?.setData([...data], true, true, false);
       } else {
         this.options = {
           ...this._styleOptions,
@@ -116,21 +134,38 @@ export class BpChart {
             {
               name: 'Blood Pressure',
               type: 'scatter',
-              data: [...bloodPressures],
+              data: [...data],
               id: 'bp-data',
               visible: false,
               showInLegend: false,
             },
           ],
         };
-
-        this.updateFlag = true;
       }
       });
     });
   }
 
+  public ngOnInit(): void {
+    this._intervalId = setInterval(() => {
+      this._fetchLiveData();
+    }, this._updateInterval);
+  }
+
+  public ngOnDestroy(): void {
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
+  }
+
   public setChart(chart: Chart): void {
     this._chart = chart;
+  }
+
+  private _fetchLiveData(): void {
+    this._data.update((data) => [
+      ...data,
+      this._bpService.getRandomBloodPressure(),
+    ]);
   }
 }
