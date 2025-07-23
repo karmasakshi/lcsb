@@ -2,7 +2,24 @@
   <img fill priority ngSrc="./hero.webp" alt="Hero" style="object-fit: cover" />
 </div>
 
-<section style="padding: 64px 16px; justify-content: center; display: flex">
+<section
+  style="
+    padding: 64px 16px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  "
+>
+  <mat-card style="max-width: 480px; width: 100%">
+    <mat-card-header>
+      <mat-card-title>Welcome to LCSB!</mat-card-title>
+      <mat-card-subtitle
+        >Your BP can be accessed after signing in.</mat-card-subtitle
+      >
+    </mat-card-header>
+    <mat-card-content> </mat-card-content>
+  </mat-card>
   @let _session = session();
   @if (!_session) {
     <lcsb-sign-in-form></lcsb-sign-in-form>
@@ -19,10 +36,7 @@
       <mat-card-header>
         <mat-card-title>You're signed in</mat-card-title>
       </mat-card-header>
-      <mat-card-content>
-        <p>Your blood pressure data is ready.</p>
-        <p></p>
-      </mat-card-content>
+      <mat-card-content><p></p></mat-card-content>
       <mat-card-actions>
         <button routerLink="/bp" type="button" matButton="filled">
           View BP

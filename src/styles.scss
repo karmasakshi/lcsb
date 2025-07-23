@@ -17,6 +17,7 @@ html {
   @include mat.card-overrides(
     (
       elevated-container-elevation: var(--mat-sys-level0),
+      subtitle-text-color: var(--mat-sys-outline),
     )
   );
 }
@@ -34,6 +35,7 @@ body {
 }
 
 .mat-mdc-form-field {
+  margin-bottom: 8px;
   width: 100%;
 
   .mat-mdc-form-field-icon-suffix {

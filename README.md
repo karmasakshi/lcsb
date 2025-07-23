@@ -15,7 +15,7 @@ Login with any valid email and password.
 - Live: https://lcsb.vercel.app/
 - Repository: https://github.com/karmasakshi/lcsb
 - Commit history: https://github.com/karmasakshi/lcsb/commits/main/
-- PageSpeed Insights: https://pagespeed.web.dev/analysis/https-lcsb-vercel-app/bu19hx15by?form_factor=mobile
+- PageSpeed Insights: https://pagespeed.web.dev/analysis/https-lcsb-vercel-app/sigsos7bi9?form_factor=mobile
 
 ## Features
 
