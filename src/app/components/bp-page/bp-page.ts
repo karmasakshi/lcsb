@@ -55,8 +55,8 @@ export class BpPage implements OnInit {
 
   public constructor() {
     this.chartConfiguration = signal({
-      maximumValue: 140,
-      minimumValue: 60,
+      maximumValue: undefined,
+      minimumValue: undefined,
       refreshInterval: 5,
       axisType: 'linear',
     });

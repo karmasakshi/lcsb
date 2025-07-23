@@ -6,6 +6,7 @@ import {
   input,
   InputSignal,
   OnDestroy,
+  OnInit,
   signal,
   WritableSignal
 } from '@angular/core';
@@ -22,7 +23,7 @@ import { Bp } from '../../services/bp/bp';
   templateUrl: './bp-chart.html',
   styleUrl: './bp-chart.scss',
 })
-export class BpChart implements OnDestroy {
+export class BpChart implements OnInit, OnDestroy {
   private readonly _bpService = inject(Bp);
 
   private readonly _chart = signal<Chart | undefined>(undefined);
@@ -48,7 +49,7 @@ export class BpChart implements OnDestroy {
 
     this.liveReading = signal(0);
 
-    this.options = this._getOptions('linear');
+    this.options = this._getOptions();
 
     effect(() => {
       const chart = this._chart();
@@ -68,6 +69,10 @@ export class BpChart implements OnDestroy {
         this._chart()?.update(
           {
             yAxis: this._getYAxis(scale),
+            xAxis: {
+              min: config.minimumValue,
+              max: config.maximumValue,
+            },
           },
           true,
           true,
@@ -82,6 +87,15 @@ export class BpChart implements OnDestroy {
         this._fetchLiveData();
       }, config.refreshInterval * 1000);
     });
+  }
+
+  public ngOnInit(): void {
+    const initialConfig = this.chartConfiguration();
+    this.options = this._getOptions(
+      initialConfig?.axisType || 'linear',
+      initialConfig?.minimumValue,
+      initialConfig?.maximumValue
+    );
   }
 
   public ngOnDestroy(): void {
@@ -114,7 +128,7 @@ export class BpChart implements OnDestroy {
     }
   }
 
-  private _getOptions(scale: 'linear' | 'logarithmic'): Options {
+  private _getOptions(scale?: 'linear' | 'logarithmic', min?: number, max?: number): Options {
     return {
       chart: {
         backgroundColor: 'transparent',
@@ -129,8 +143,10 @@ export class BpChart implements OnDestroy {
           style: { font: 'var(--mat-sys-body-small)' },
         },
         labels: { style: { font: 'var(--mat-sys-body-small)' } },
+        min: min,
+        max: max,
       },
-      yAxis: this._getYAxis(scale),
+      yAxis: this._getYAxis(scale ?? 'linear'),
       legend: {
         itemStyle: { font: 'var(--mat-sys-body-medium)' },
       },
