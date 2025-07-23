@@ -46,6 +46,15 @@
           })
         "
       >
+        <div style="text-align: center">
+          <mat-button-toggle-group formControlName="axisType">
+            <mat-button-toggle value="linear">Linear</mat-button-toggle>
+            <mat-button-toggle value="logarithmic"
+              >Logarithmic</mat-button-toggle
+            >
+          </mat-button-toggle-group>
+        </div>
+        <p></p>
         <mat-form-field>
           <mat-label>Maximum Value</mat-label>
           <input
@@ -97,14 +106,6 @@
             <mat-error>Refresh Interval is required</mat-error>
           }
         </mat-form-field>
-        <div style="text-align: center">
-          <mat-button-toggle-group formControlName="axisType">
-            <mat-button-toggle value="linear">Linear</mat-button-toggle>
-            <mat-button-toggle value="logarithmic"
-              >Logarithmic</mat-button-toggle
-            >
-          </mat-button-toggle-group>
-        </div>
       </form>
     </mat-card-content>
     <mat-card-actions>
