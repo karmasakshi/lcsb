@@ -1,13 +1,32 @@
 # LCSB
 
-## See it live
-https://lcsb.vercel.app/
+## How to run
+
+1. `git clone https://github.com/karmasakshi/lcsb.git`
+2. `cd lcsb`
+3. `npm i`
+4. `npm start`
+5. Go to http://localhost:4200
+
+Login with any valid email and password.
+
+## Links
+
+- Live: https://lcsb.vercel.app/
+- Repository: https://github.com/karmasakshi/lcsb
+- Commit history: https://github.com/karmasakshi/lcsb/commits/main/
+- PageSpeed Insights: https://pagespeed.web.dev/analysis/https-lcsb-vercel-app/bu19hx15by?form_factor=mobile
 
 ## Features
 
-- Full commit history from scratch
-- Linting via ESLint
-- Code formatting via Prettier
+## Components
+
+- [App](./src/app/components/app/app.ts): Root component.
+- [BpChart](./src/app/components/bp-chart/bp-chart.ts): Blood pressure chart component.
+- [BpPage](./src/app/components/bp-page/bp-page.ts): Container component for blood pressure chart and chart configuration form.
+- [HomePage](./src/app/components/home-page/home-page.ts): Home component.
+- [Navigation](./src/app/components/navigation/navigation.ts): Navigation component.
+- [SignInForm](./src/app/components/sign-in-form/sign-in-form.ts): Sign in form component.
 
 ### Routes
 
@@ -32,3 +51,4 @@ https://lcsb.vercel.app/
 
 - Internationalization
 - Unit and E2E tests
+- Releasing and versioning
