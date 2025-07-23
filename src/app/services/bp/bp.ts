@@ -11,13 +11,6 @@ export class Bp {
   private readonly _httpClient = inject(HttpClient);
   private readonly _userService = inject(User);
 
-  public getRandomBloodPressure(): number {
-    const minimum = 90;
-    const maximum = 140;
-
-    return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-  }
-
   public getBloodPressures(): Promise<BloodPressures> {
     const token: null | string = this._userService.session()?.token ?? null;
 
@@ -26,5 +19,12 @@ export class Bp {
         .get<BloodPressures>(`/users/${token}/data`)
         .pipe(delay(1800)),
     );
+  }
+
+  public getRandomBloodPressure(): number {
+    const minimum = 90;
+    const maximum = 140;
+
+    return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
   }
 }

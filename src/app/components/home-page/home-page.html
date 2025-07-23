@@ -1,22 +1,13 @@
-<section
-  style="
-    min-height: 100vh;
-    padding: 0 16px;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-  "
->
-  <img
-    fill
-    priority
-    ngSrc="./hero.webp"
-    alt="Hero"
-    style="object-fit: cover; position: absolute; inset: 1"
-  />
+<div style="position: absolute; inset: 0; z-index: -1">
+  <img fill priority ngSrc="./hero.webp" alt="Hero" style="object-fit: cover" />
+</div>
+
+<section style="padding: 64px 16px; justify-content: center; display: flex">
   @let _session = session();
-  @if (_session) {
-    <mat-card style="min-width: 480px">
+  @if (!_session) {
+    <lcsb-sign-in-form></lcsb-sign-in-form>
+  } @else {
+    <mat-card style="max-width: 480px; width: 100%">
       <img
         mat-card-image
         priority
@@ -38,7 +29,5 @@
         </button>
       </mat-card-actions>
     </mat-card>
-  } @else {
-    <lcsb-sign-in-form></lcsb-sign-in-form>
   }
 </section>

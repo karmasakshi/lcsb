@@ -45,4 +45,9 @@ body {
   .mat-mdc-card-actions {
     gap: 8px;
   }
+
+  .mat-mdc-card-image {
+    object-fit: cover;
+    width: 100%;
+  }
 }

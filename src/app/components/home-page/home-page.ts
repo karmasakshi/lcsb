@@ -17,9 +17,9 @@ import { SignInForm } from '../sign-in-form/sign-in-form';
   selector: 'lcsb-home-page',
   imports: [
     NgOptimizedImage,
-    RouterLink,
     MatButtonModule,
     MatCardModule,
+    RouterLink,
     SignInForm,
   ],
   templateUrl: './home-page.html',
