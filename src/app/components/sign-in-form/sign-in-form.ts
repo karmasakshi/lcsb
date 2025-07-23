@@ -1,11 +1,5 @@
 import { NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject,
-  signal,
-  WritableSignal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -43,17 +37,17 @@ export class SignInForm {
   private readonly _router = inject(Router);
   private readonly _userService = inject(User);
 
-  public readonly isLoading: WritableSignal<boolean>;
-  public readonly isPasswordHidden: WritableSignal<boolean>;
+  public isLoading: boolean;
+  public isPasswordHidden: boolean;
   public readonly signInFormGroup: FormGroup<{
     email: FormControl<null | string>;
     password: FormControl<null | string>;
   }>;
 
   public constructor() {
-    this.isLoading = signal(false);
+    this.isLoading = false;
 
-    this.isPasswordHidden = signal(true);
+    this.isPasswordHidden = true;
 
     this.signInFormGroup = this._formBuilder.group({
       email: this._formBuilder.control<null | string>(null, [
@@ -68,11 +62,11 @@ export class SignInForm {
   }
 
   public async signIn(email: string, password: string): Promise<void> {
-    if (this.isLoading()) {
+    if (this.isLoading) {
       return;
     }
 
-    this.isLoading.set(true);
+    this.isLoading = true;
 
     this.signInFormGroup.disable();
 
@@ -82,12 +76,8 @@ export class SignInForm {
     } catch (error: unknown) {
       console.log(error);
     } finally {
-      this.isLoading.set(false);
+      this.isLoading = false;
       this.signInFormGroup.enable();
     }
-  }
-
-  public togglePasswordVisibility(): void {
-    this.isPasswordHidden.update((isPasswordHidden) => !isPasswordHidden);
   }
 }

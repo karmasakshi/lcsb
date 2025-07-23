@@ -44,11 +44,10 @@
           <mat-error>Please enter a valid email address</mat-error>
         }
       </mat-form-field>
-      @let _isPasswordHidden = isPasswordHidden();
       <mat-form-field>
         <mat-label>Password</mat-label>
         <input
-          [type]="_isPasswordHidden ? 'password' : 'text'"
+          [type]="isPasswordHidden ? 'password' : 'text'"
           autocomplete="current-password"
           formControlName="password"
           matInput
@@ -58,13 +57,13 @@
           aria-label="Toggle visibility"
           tabindex="-1"
           [disabled]="signInFormGroup.controls.password.disabled"
-          (click)="togglePasswordVisibility()"
+          (click)="isPasswordHidden = !isPasswordHidden"
           matIconButton
           matSuffix
           type="button"
         >
           <mat-icon>{{
-            _isPasswordHidden ? 'visibility' : 'visibility_off'
+            isPasswordHidden ? 'visibility' : 'visibility_off'
           }}</mat-icon>
         </button>
         @if (
@@ -101,10 +100,9 @@
     </button>
   </mat-card-actions>
   <mat-card-footer>
-    @let _isLoading = isLoading();
     <mat-progress-bar
       mode="indeterminate"
-      [style]="{ visibility: _isLoading ? 'visible' : 'hidden' }"
+      [style]="{ visibility: isLoading ? 'visible' : 'hidden' }"
     ></mat-progress-bar>
   </mat-card-footer>
 </mat-card>
