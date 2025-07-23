@@ -8,7 +8,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
-  WritableSignal
+  WritableSignal,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Chart, Options, Series } from 'highcharts';
@@ -94,7 +94,7 @@ export class BpChart implements OnInit, OnDestroy {
     this.options = this._getOptions(
       initialConfig?.axisType || 'linear',
       initialConfig?.minimumValue,
-      initialConfig?.maximumValue
+      initialConfig?.maximumValue,
     );
   }
 
@@ -128,7 +128,11 @@ export class BpChart implements OnInit, OnDestroy {
     }
   }
 
-  private _getOptions(scale?: 'linear' | 'logarithmic', min?: number, max?: number): Options {
+  private _getOptions(
+    scale?: 'linear' | 'logarithmic',
+    min?: number,
+    max?: number,
+  ): Options {
     return {
       chart: {
         backgroundColor: 'transparent',
