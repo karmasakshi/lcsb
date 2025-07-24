@@ -1,16 +1,10 @@
 <section
-  style="
-    padding: 16px;
-    display: flex;
-    gap: 16px;
-    flex-direction: column;
-    align-items: center;
-  "
+  style="display: flex; gap: 16px; flex-direction: column; align-items: center"
 >
+  @let _bloodPressures = bloodPressures();
+  @let _chartConfiguration = chartConfiguration();
   <mat-card style="max-width: 960px; overflow: hidden; width: 100%">
     <mat-card-content>
-      @let _bloodPressures = bloodPressures();
-      @let _chartConfiguration = chartConfiguration();
       @if (isLoading) {
         <div style="height: 572px"></div>
       } @else {
@@ -27,7 +21,7 @@
       ></mat-progress-bar>
     </mat-card-footer>
   </mat-card>
-  <mat-card style="max-width: 480px; overflow: hidden; width: 100%">
+  <mat-card style="max-width: 480px; width: 100%">
     <mat-card-content>
       <form
         id="chart-configuration-form"
@@ -55,7 +49,7 @@
         </div>
         <p></p>
         <mat-form-field>
-          <mat-label>Maximum Value</mat-label>
+          <mat-label>Maximum value</mat-label>
           <input formControlName="maximumValue" matInput type="number" />
           @if (
             chartConfigurationFormGroup.controls.maximumValue.touched &&
@@ -63,11 +57,11 @@
               'required'
             ]
           ) {
-            <mat-error>Maximum Value is required</mat-error>
+            <mat-error>Maximum value is required</mat-error>
           }
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Minimum Value</mat-label>
+          <mat-label>Minimum value</mat-label>
           <input formControlName="minimumValue" matInput type="number" />
           @if (
             chartConfigurationFormGroup.controls.minimumValue.touched &&
@@ -75,11 +69,11 @@
               'required'
             ]
           ) {
-            <mat-error>Minimum Value is required</mat-error>
+            <mat-error>Minimum value is required</mat-error>
           }
         </mat-form-field>
         <mat-form-field>
-          <mat-label>Refresh Interval (Seconds)</mat-label>
+          <mat-label>Refresh interval (seconds)</mat-label>
           <input
             formControlName="refreshInterval"
             matInput
@@ -92,7 +86,7 @@
               'required'
             ]
           ) {
-            <mat-error>Refresh Interval is required</mat-error>
+            <mat-error>Refresh interval is required</mat-error>
           }
         </mat-form-field>
       </form>
