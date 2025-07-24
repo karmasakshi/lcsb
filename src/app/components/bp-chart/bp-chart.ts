@@ -149,11 +149,9 @@ export class BpChart implements OnInit, OnDestroy {
     max?: number | null,
   ): Options {
     return {
-      chart: {
-        backgroundColor: 'transparent',
-      },
+      chart: { backgroundColor: 'transparent' },
       title: {
-        text: 'Blood Pressure Histogram',
+        text: 'Systolic Blood Pressure Histogram',
         style: {
           font: 'var(--mat-sys-body-large)',
           color: 'var(--mat-sys-on-background)',
@@ -161,7 +159,7 @@ export class BpChart implements OnInit, OnDestroy {
       },
       xAxis: {
         title: {
-          text: 'Blood Pressure',
+          text: 'Systolic Blood Pressure',
           style: {
             font: 'var(--mat-sys-body-small)',
             color: 'var(--mat-sys-on-background)',
@@ -173,10 +171,10 @@ export class BpChart implements OnInit, OnDestroy {
             font: 'var(--mat-sys-body-small)',
           },
         },
-        min: min,
-        max: max,
+        min,
+        max,
       },
-      yAxis: this._getYAxis(scale ?? 'linear'),
+      yAxis: this._getYAxis(scale),
       legend: {
         itemStyle: {
           font: 'var(--mat-sys-body-medium)',
@@ -194,7 +192,6 @@ export class BpChart implements OnInit, OnDestroy {
           name: 'Blood Pressure Distribution',
           type: 'histogram',
           baseSeries: 'bp-data',
-          zIndex: 1,
         },
         {
           name: 'Blood Pressure',
@@ -208,7 +205,9 @@ export class BpChart implements OnInit, OnDestroy {
     };
   }
 
-  private _getYAxis(scale: 'linear' | 'logarithmic'): Options['yAxis'] {
+  private _getYAxis(
+    scale: 'linear' | 'logarithmic' = 'linear',
+  ): Options['yAxis'] {
     return {
       type: scale,
       title: {
@@ -223,10 +222,8 @@ export class BpChart implements OnInit, OnDestroy {
           font: 'var(--mat-sys-body-small)',
           color: 'var(--mat-sys-on-background)',
         },
-        format: '{value:.1f}',
       },
       gridLineColor: 'var(--mat-sys-outline-variant)',
-      minorTickInterval: scale === 'logarithmic' ? 0.1 : undefined,
     };
   }
 }
