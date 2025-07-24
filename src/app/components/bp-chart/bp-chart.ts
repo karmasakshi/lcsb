@@ -151,7 +151,7 @@ export class BpChart implements OnInit, OnDestroy {
     return {
       chart: { backgroundColor: 'transparent' },
       title: {
-        text: 'Systolic Blood Pressure Histogram',
+        text: 'Blood Pressure Histogram',
         style: {
           font: 'var(--mat-sys-body-large)',
           color: 'var(--mat-sys-on-background)',
@@ -159,7 +159,7 @@ export class BpChart implements OnInit, OnDestroy {
       },
       xAxis: {
         title: {
-          text: 'Systolic Blood Pressure',
+          text: 'Blood Pressure',
           style: {
             font: 'var(--mat-sys-body-small)',
             color: 'var(--mat-sys-on-background)',

@@ -1,5 +1,9 @@
 # LCSB
 
+## References
+
+- [Screenshots](./screenshots/)
+
 ## How to run
 
 1. `git clone https://github.com/karmasakshi/lcsb.git`
@@ -8,7 +12,7 @@
 4. `npm start`
 5. Go to http://localhost:4200
 
-Login with any valid email and password.
+**Login with any valid email and password.**
 
 ## Links
 
@@ -19,10 +23,11 @@ Login with any valid email and password.
 
 ## Features
 
-- SPA built with latest Angular with Material Design components.
-- Automatic light or dark mode based on the OS theme.
+- SPA built with latest Angular with responsive Material Design components.
+- Custom theme with automatic light or dark mode based on the OS color scheme.
 - Mocked API calls with loading state and synthetic delays.
 - Forms with validations.
+- Live reading simulation.
 
 ### Exclusions
 
