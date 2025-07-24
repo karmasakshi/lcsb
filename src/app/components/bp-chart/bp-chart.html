@@ -1,13 +1,13 @@
 <highcharts-chart
-  (chartInstance)="setChart($event)"
+  (chartInstance)="setChartInstance($event)"
   [options]="options"
   style="display: block; height: 480px"
 />
 
 <div style="text-align: center">
   @let _liveReading = liveReading();
-  <h1 style="font: var(--mat-sys-display-small)">
+  <p style="font: var(--mat-sys-display-small)">
     <mat-icon>monitor_heart</mat-icon>
     <span>&nbsp;{{ _liveReading === 0 ? '--' : _liveReading }}</span>
-  </h1>
+  </p>
 </div>

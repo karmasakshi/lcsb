@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  untracked,
   WritableSignal,
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,28 +27,26 @@ import { Bp } from '../../services/bp/bp';
 export class BpChart implements OnInit, OnDestroy {
   private readonly _bpService = inject(Bp);
 
-  private readonly _chart = signal<Chart | undefined>(undefined);
-  private _intervalId: number | undefined;
-  private readonly _liveData: WritableSignal<number[]>;
   private readonly _binWidth: number;
+  private readonly _chart: WritableSignal<undefined | Chart>;
+  private _intervalId: undefined | number;
   private readonly _maxValues: number;
 
   public readonly bloodPressures: InputSignal<number[]> = input.required();
   public readonly chartConfiguration: InputSignal<ChartConfiguration> =
     input.required();
 
-  public liveReading: WritableSignal<number>;
+  public readonly liveReading: WritableSignal<number>;
   public options: Options;
 
   public constructor() {
-    this._chart.set(undefined);
-
     this._binWidth = 10;
+
+    this._chart = signal(undefined);
+
     this._intervalId = undefined;
 
-    this._liveData = signal([]);
-
-    this._maxValues = 5;
+    this._maxValues = 100;
 
     this.liveReading = signal(0);
 
@@ -55,50 +54,63 @@ export class BpChart implements OnInit, OnDestroy {
 
     effect(() => {
       const chart = this._chart();
-      const bloodPressures = this.bloodPressures();
-      if (!chart) return;
-      const scatterSeries = chart.get('bp-data') as Series | undefined;
-      if (scatterSeries) {
-        scatterSeries.setData([...bloodPressures], true, true, true);
-      }
+
+      untracked(() => {
+        const bloodPressures: number[] = this.bloodPressures();
+
+        if (!chart) {
+          return;
+        }
+
+        const scatterSeries: undefined | Series = chart.get(
+          'bp-data',
+        ) as Series;
+
+        if (scatterSeries) {
+          scatterSeries.setData([...bloodPressures], true);
+        }
+      });
     });
 
     effect(() => {
-      const config = this.chartConfiguration();
-      const scale = config.axisType || 'linear';
+      const chartConfiguration = this.chartConfiguration();
 
-      if (this._chart()) {
-        this._chart()?.update(
-          {
-            yAxis: this._getYAxis(scale),
-            xAxis: {
-              min: config.minimumValue,
-              max: config.maximumValue
-                ? config.maximumValue - this._binWidth
-                : undefined,
+      untracked(() => {
+        const chart: undefined | Chart = this._chart();
+
+        if (chart) {
+          chart.update(
+            {
+              yAxis: this._getYAxis(chartConfiguration.axisType),
+              xAxis: {
+                min: chartConfiguration.minimumValue,
+                max: chartConfiguration.maximumValue
+                  ? chartConfiguration.maximumValue - this._binWidth
+                  : undefined,
+              },
             },
-          },
-          true,
-          true,
-          false,
-        );
-      }
+            true,
+          );
+        }
 
-      if (this._intervalId) {
-        clearInterval(this._intervalId);
-      }
-      this._intervalId = setInterval(() => {
-        this._fetchLiveData();
-      }, config.refreshInterval * 1000);
+        if (this._intervalId) {
+          clearInterval(this._intervalId);
+        }
+
+        this._intervalId = setInterval(() => {
+          this._fetchLiveReading();
+        }, chartConfiguration.refreshInterval * 1000);
+      });
     });
   }
 
   public ngOnInit(): void {
-    const initialConfig = this.chartConfiguration();
+    const chartConfiguration = this.chartConfiguration();
+
     this.options = this._getOptions(
-      initialConfig?.axisType || 'linear',
-      initialConfig?.minimumValue,
-      initialConfig?.maximumValue,
+      chartConfiguration?.axisType,
+      chartConfiguration?.minimumValue,
+      chartConfiguration?.maximumValue,
     );
   }
 
@@ -108,26 +120,25 @@ export class BpChart implements OnInit, OnDestroy {
     }
   }
 
-  public setChart(chart: Chart): void {
+  public setChartInstance(chart: Chart): void {
     this._chart.set(chart);
   }
 
-  private _fetchLiveData(): void {
-    this.liveReading.set(this._bpService.getRandomBloodPressure());
+  private _fetchLiveReading(): void {
+    const liveReading: number = this._bpService.getRandomBloodPressure();
 
-    this._liveData.update((liveData) => {
-      const updated = [...liveData, this.liveReading()];
-      return updated.length > this._maxValues
-        ? updated.slice(-this._maxValues)
-        : updated;
-    });
+    this.liveReading.set(liveReading);
 
-    const chart = this._chart();
+    const chart: undefined | Chart = this._chart();
+
     if (chart) {
-      const scatterSeries = chart.get('bp-data') as Series | undefined;
+      const scatterSeries: undefined | Series = chart.get('bp-data') as Series;
+
       if (scatterSeries) {
-        const shouldShift = scatterSeries.data.length >= this._maxValues;
-        scatterSeries.addPoint(this.liveReading(), true, shouldShift, true);
+        const shouldShift: boolean =
+          scatterSeries.data.length >= this._maxValues;
+
+        scatterSeries.addPoint(liveReading, true, shouldShift);
       }
     }
   }

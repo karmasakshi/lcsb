@@ -2,7 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -85,7 +85,7 @@ export class BpPage implements OnInit {
     this.getBloodPressures();
   }
 
-  public async getBloodPressures() {
+  public async getBloodPressures(): Promise<void> {
     if (this.isLoading) {
       return;
     }
