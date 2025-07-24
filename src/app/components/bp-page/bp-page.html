@@ -1,16 +1,14 @@
 <section
   style="display: flex; gap: 16px; flex-direction: column; align-items: center"
 >
-  @let _bloodPressures = bloodPressures();
-  @let _chartConfiguration = chartConfiguration();
   <mat-card style="max-width: 960px; overflow: hidden; width: 100%">
     <mat-card-content>
       @if (isLoading) {
         <div style="height: 572px"></div>
       } @else {
         <lcsb-bp-chart
-          [chartConfiguration]="_chartConfiguration"
-          [bloodPressures]="_bloodPressures"
+          [chartConfiguration]="chartConfiguration"
+          [bloodPressures]="bloodPressures"
         ></lcsb-bp-chart>
       }
     </mat-card-content>

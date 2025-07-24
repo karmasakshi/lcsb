@@ -2,9 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
-  signal,
-  WritableSignal,
+  OnInit
 } from '@angular/core';
 import {
   FormBuilder,
@@ -43,8 +41,8 @@ export class BpPage implements OnInit {
   private readonly _formBuilder = inject(FormBuilder);
   private readonly _bpService = inject(Bp);
 
-  public readonly bloodPressures: WritableSignal<number[]>;
-  public readonly chartConfiguration: WritableSignal<ChartConfiguration>;
+  public bloodPressures: number[];
+  public chartConfiguration: ChartConfiguration;
   public readonly chartConfigurationFormGroup: FormGroup<{
     axisType: FormControl<null | 'linear' | 'logarithmic'>;
     maximumValue: FormControl<null | number>;
@@ -54,14 +52,14 @@ export class BpPage implements OnInit {
   public isLoading: boolean;
 
   public constructor() {
-    this.bloodPressures = signal([]);
+    this.bloodPressures = [];
 
-    this.chartConfiguration = signal({
+    this.chartConfiguration = {
       axisType: 'linear',
       maximumValue: null,
       minimumValue: null,
       refreshInterval: 5,
-    });
+    };
 
     this.chartConfigurationFormGroup = this._formBuilder.group({
       maximumValue: this._formBuilder.control<null | number>(null, [
@@ -98,7 +96,7 @@ export class BpPage implements OnInit {
 
     try {
       const { blood_pressures } = await this._bpService.getBloodPressures();
-      this.bloodPressures.set(blood_pressures);
+      this.bloodPressures = blood_pressures;
     } catch (error: unknown) {
       console.log(error);
     } finally {
@@ -108,6 +106,6 @@ export class BpPage implements OnInit {
   }
 
   public setChartConfiguration(chartConfiguration: ChartConfiguration): void {
-    this.chartConfiguration.set(chartConfiguration);
+    this.chartConfiguration = chartConfiguration;
   }
 }
